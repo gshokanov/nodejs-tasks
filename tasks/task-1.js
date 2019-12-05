@@ -1,6 +1,6 @@
-const { Buffer } = require('buffer');
-const stream = require('stream');
-const { EOL } = require('os');
+import { Buffer } from 'buffer';
+import stream from 'stream';
+import { EOL } from 'os';
 
 class ReverseTransform extends stream.Transform {
     constructor(options) {

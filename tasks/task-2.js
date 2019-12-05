@@ -1,8 +1,9 @@
-const fs = require('fs');
+import fs from 'fs';
+import stream from 'stream';
+import path from 'path';
+import csv from 'csvtojson';
+
 const fsPromise = fs.promises;
-const stream = require('stream');
-const path = require('path');
-const csv = require('csvtojson');
 
 const distPath = path.join(__dirname, '../dist');
 
