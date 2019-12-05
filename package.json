@@ -1,0 +1,23 @@
+{
+  "name": "nodejs-tasks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "task1": "nodemon ./tasks/task-1.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagicCurlyHair/nodejs-tasks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MagicCurlyHair/nodejs-tasks/issues"
+  },
+  "homepage": "https://github.com/MagicCurlyHair/nodejs-tasks#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  }
+}
