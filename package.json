@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "task1": "nodemon ./tasks/task-1.js"
+    "task1": "nodemon ./tasks/task-1.js",
+    "task2": "nodemon ./tasks/task-2.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +20,8 @@
   "homepage": "https://github.com/MagicCurlyHair/nodejs-tasks#readme",
   "devDependencies": {
     "nodemon": "^2.0.1"
+  },
+  "dependencies": {
+    "csvtojson": "^2.0.10"
   }
 }
