@@ -1,19 +1,23 @@
 import * as uuid from 'uuid/v1';
-import { User } from './interfaces/user';
+import { BaseUser, ClientUser, StoredUser } from './interfaces/user';
 
 
 export class UserModel {
-    private collection: Map<string, User> = new Map();
+    private collection: Map<string, StoredUser> = new Map();
 
-    private stripMetadata(user: User): User {
-        // Leaking isDeleted to client is useless
-        return {
-            ...user,
-            isDeleted: undefined
-        } as unknown as User;
+    private stripMetadata(user: StoredUser): ClientUser {
+        // Copy user object to prevent accidental modification and omit unnecessary data
+        return (Object.keys(user) as Array<keyof StoredUser>).reduce<ClientUser>((acc, key) => {
+            if (key !== 'isDeleted') {
+                // TS cannot determine that keys on the left and right side of assignment are
+                // always the same. Typecast to any gets around this
+                (acc as any)[key] = user[key];
+            }
+            return acc;
+        }, {} as ClientUser);
     }
 
-    getById(id: string): User | null {
+    getById(id: string): ClientUser | null {
         const user = this.collection.get(id);
         if (!user || user.isDeleted) {
             return null;
@@ -21,7 +25,7 @@ export class UserModel {
         return this.stripMetadata(user);
     }
 
-    getAutoSuggestedUsers(loginSubstring: string, limit: number): Array<User> {
+    getAutoSuggestedUsers(loginSubstring: string, limit: number): Array<ClientUser> {
         return [...this.collection.values()]
             .reduce((acc, user) => {
                 if (!user.isDeleted && user.login.startsWith(loginSubstring)) {
@@ -29,21 +33,24 @@ export class UserModel {
                     acc.push(safeUser);
                 }
                 return acc;
-            }, [] as Array<User>)
+            }, [] as Array<ClientUser>)
             .sort((a, b) => a.login.localeCompare(b.login))
             .slice(0, limit);
     }
 
-    create(user: User): string {
+    create(user: BaseUser): string {
         const id = uuid();
-        user.id = id;
-        user.isDeleted = false;
-        this.collection.set(id, user);
+        const storedUser: StoredUser = {
+            ...user,
+            id,
+            isDeleted: false
+        };
+        this.collection.set(id, storedUser);
         return id;
     }
 
-    update(id: string, user: Partial<User>): boolean {
-        const savedUser = this.getById(id);
+    update(id: string, user: ClientUser): boolean {
+        const savedUser = this.collection.get(id);
         if (!savedUser || savedUser.isDeleted) {
             return false;
         }
@@ -52,12 +59,11 @@ export class UserModel {
     }
 
     delete(id: string): boolean {
-        const user = this.getById(id);
+        const user = this.collection.get(id);
         if (user && !user.isDeleted) {
             user.isDeleted = true;
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }

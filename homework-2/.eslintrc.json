@@ -153,7 +153,8 @@
         "no-shadow": 2,
         "no-undef-init": 2,
         "no-undef": 2,
-        "no-unused-vars": 2,
+        "no-unused-vars": 0,
+        "@typescript-eslint/no-unused-vars": 2,
         // Node.js
         "callback-return": 2,
         "no-mixed-requires": 2,
