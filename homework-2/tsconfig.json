@@ -3,7 +3,7 @@
     "src/app.ts"
   ],
   "compilerOptions": {
-    "strict": false,
+    "strict": true,
     "noImplicitAny": true,
     "module": "commonjs",
     "moduleResolution": "node",
