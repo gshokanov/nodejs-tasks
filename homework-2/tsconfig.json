@@ -1,0 +1,16 @@
+{
+  "files": [
+    "src/app.ts"
+  ],
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "types": [
+      "node"
+    ],
+    "target": "es2019"
+  }
+}
