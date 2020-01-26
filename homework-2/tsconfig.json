@@ -1,15 +1,21 @@
 {
-  "files": [
-    "src/app.ts"
+  "include": [
+    "src/**/*.ts"
   ],
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "dist",
     "types": [
-      "node"
+      "node",
+      "reflect-metadata"
+    ],
+    "lib": [
+      "es2019"
     ],
     "target": "es2019"
   }
