@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import { GroupService } from '../services/group.service';
 import { GroupModel } from '../models/group.model';
+import { UserGroupModel } from '../models/user-group.model';
 import { GroupMapper } from '../data-access/group.mapper';
 import { groupValidator } from '../middleware/validators';
 
 const router = Router();
-const service = new GroupService(GroupModel, new GroupMapper());
+const service = new GroupService(GroupModel, new GroupMapper(), UserGroupModel);
 
 router.get('/', async (req, res, next) => {
     try {

@@ -1,7 +1,7 @@
 import { Permissions } from './permission';
 
 export interface Group {
-    id?: number;
+    id?: string;
     name: string;
     permissions: Permissions;
 }

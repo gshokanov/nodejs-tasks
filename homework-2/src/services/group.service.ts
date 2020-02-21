@@ -1,11 +1,14 @@
+import { Sequelize } from 'sequelize-typescript';
 import { GroupModel } from '../models/group.model';
+import { UserGroupModel } from '../models/user-group.model';
 import { GroupMapper } from '../data-access/group.mapper';
 import { Group } from '../types/group';
 
 export class GroupService {
     constructor(
         private model: typeof GroupModel,
-        private mapper: GroupMapper
+        private mapper: GroupMapper,
+        private userGroupModel: typeof UserGroupModel
     ) {}
 
     async findAll() {
@@ -21,7 +24,7 @@ export class GroupService {
         return null;
     }
 
-    async create(group: Group): Promise<number> {
+    async create(group: Group): Promise<string> {
         const createdGroup = await this.model.create(group);
         return createdGroup.id;
     }
@@ -41,5 +44,27 @@ export class GroupService {
             },
             force: true
         });
+    }
+
+    async addUsersToGroup(groupId: string, userIds: Array<string>): Promise<void> {
+        const { sequelize } = this.model;
+        const transaction = await sequelize?.transaction();
+        if (!transaction) {
+            throw new Error('Transaction could not be created');
+        }
+        try {
+            await Promise.all(
+                userIds.map(
+                    userId => this.userGroupModel.create({
+                        userId,
+                        groupId
+                    }, { transaction })
+                )
+            );
+            await transaction.commit();
+        } catch(err) {
+            await transaction.rollback();
+            throw err;
+        }
     }
 }

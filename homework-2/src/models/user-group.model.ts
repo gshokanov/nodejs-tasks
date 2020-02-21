@@ -13,5 +13,5 @@ export class UserGroupModel extends Model<UserGroupModel> {
 
     @ForeignKey(() => GroupModel)
     @Column
-    groupId!: number;
+    groupId!: string;
 }
