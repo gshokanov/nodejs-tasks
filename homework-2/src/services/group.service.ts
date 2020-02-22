@@ -16,7 +16,7 @@ export class GroupService {
         return result.map(group => this.mapper.toDomain(group));
     }
 
-    async findById(id: number): Promise<Group | null> {
+    async findById(id: string): Promise<Group | null> {
         const group = await this.model.findByPk(id);
         if (group) {
             return this.mapper.toDomain(group)
@@ -37,7 +37,7 @@ export class GroupService {
         });
     }
 
-    async delete(id: number) {
+    async delete(id: string) {
         return this.model.destroy({
             where: {
                 id

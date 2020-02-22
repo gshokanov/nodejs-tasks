@@ -16,18 +16,18 @@ export class GroupModel extends Model<GroupModel> {
     })
     id!: string;
 
-    @Column
+    @Column(DataType.STRING(50))
     name!: string;
 
     @Column(DataType.ARRAY(DataType.ENUM(...permissions)))
     permissions!: Permissions;
 }
 
-GroupModel.beforeDestroy(async (group) => {
+process.nextTick(() => GroupModel.beforeDestroy(async (group) => {
     const result = await UserGroupModel.findAll({
         where: {
             groupId: (group as GroupModel).id
         }
     });
     return Promise.all(result.map(record => record.destroy())) as any as Promise<void>;
-});
+}));

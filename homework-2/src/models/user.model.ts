@@ -35,11 +35,11 @@ export class UserModel extends Model<UserModel> {
     isDeleted!: boolean;
 }
 
-UserModel.beforeDestroy(async (user) => {
+process.nextTick(() => UserModel.beforeDestroy(async (user) => {
     const result = await UserGroupModel.findAll({
         where: {
             userId: (user as UserModel).id
         }
     });
     return Promise.all(result.map(record => record.destroy())) as any as Promise<void>;
-});
+}));
