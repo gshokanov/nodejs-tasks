@@ -1,11 +1,16 @@
 import { Router } from 'express';
+import { DatabaseError } from 'sequelize';
 import { UserService } from '../services/user.service';
 import { UserModel } from '../models/user.model';
+import { logController } from '../middleware/log-controller';
 import { userValidator, autoSuggestValidator } from '../middleware/validators';
 import { UserMapper } from '../data-access/user.mapper';
+import { controllerErrorHandler } from '../middleware/error-handler';
 
 const router = Router();
 const service = new UserService(UserModel, new UserMapper());
+
+router.use(logController('UserController'));
 
 router.get('/autosuggest', autoSuggestValidator, async (req, res, next) => {
     try {
@@ -50,6 +55,9 @@ router.put('/:id', userValidator, async (req, res, next) => {
         }
         res.sendStatus(200);
     } catch (err) {
+        if (err instanceof DatabaseError) {
+            return res.sendStatus(404);
+        }
         return next(err);
     }
 });
@@ -63,8 +71,13 @@ router.delete('/:id', async (req, res, next) => {
         }
         res.sendStatus(200);
     } catch (err) {
+        if (err instanceof DatabaseError) {
+            return res.sendStatus(404);
+        }
         return next(err);
     }
 });
+
+router.use(controllerErrorHandler('UserController'));
 
 export { router as userController };

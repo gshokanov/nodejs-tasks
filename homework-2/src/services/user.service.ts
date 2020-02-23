@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import { UserModel } from '../models/user.model';
 import { UserMapper } from '../data-access/user.mapper';
+import { log } from '../decorators/log';
 import { DomainExistingUser } from '../types/user';
 
 export class UserService {
@@ -17,6 +18,7 @@ export class UserService {
         return user;
     }
 
+    @log()
     async autosuggestUsers(loginSubstring: string, limit: number): Promise<Array<DomainExistingUser>> {
         const result = await this.model.findAll({
             limit,
@@ -32,6 +34,7 @@ export class UserService {
         return result.map(this.mapper.toDomain);
     }
 
+    @log()
     async findById(id: string) {
         const user = await this.findByIdWithoutMapping(id);
         if (!user) {
@@ -40,11 +43,13 @@ export class UserService {
         return this.mapper.toDomain(user);
     }
 
+    @log()
     async create(user: any): Promise<string> {
         const createdUser = await this.model.create(user);
         return createdUser.id;
     }
 
+    @log()
     async update(id: string, updatedUser: DomainExistingUser): Promise<boolean> {
         const user = await this.findByIdWithoutMapping(id);
         if (!user) {
@@ -58,6 +63,7 @@ export class UserService {
         return true;
     }
 
+    @log()
     async delete(id: string): Promise<boolean> {
         const user = await this.findByIdWithoutMapping(id);
         if (!user) {

@@ -1,7 +1,7 @@
-import { Sequelize } from 'sequelize-typescript';
 import { GroupModel } from '../models/group.model';
 import { UserGroupModel } from '../models/user-group.model';
 import { GroupMapper } from '../data-access/group.mapper';
+import { log } from '../decorators/log';
 import { Group } from '../types/group';
 
 export class GroupService {
@@ -11,11 +11,13 @@ export class GroupService {
         private userGroupModel: typeof UserGroupModel
     ) {}
 
+    @log()
     async findAll() {
         const result = await this.model.findAll();
         return result.map(group => this.mapper.toDomain(group));
     }
 
+    @log()
     async findById(id: string): Promise<Group | null> {
         const group = await this.model.findByPk(id);
         if (group) {
@@ -24,11 +26,13 @@ export class GroupService {
         return null;
     }
 
+    @log()
     async create(group: Group): Promise<string> {
         const createdGroup = await this.model.create(group);
         return createdGroup.id;
     }
 
+    @log()
     async update(id: number, updatedGroup: Group): Promise<void> {
         await this.model.update(updatedGroup, {
             where: {
@@ -37,6 +41,7 @@ export class GroupService {
         });
     }
 
+    @log()
     async delete(id: string) {
         return this.model.destroy({
             where: {
@@ -46,6 +51,7 @@ export class GroupService {
         });
     }
 
+    @log()
     async addUsersToGroup(groupId: string, userIds: Array<string>): Promise<void> {
         const { sequelize } = this.model;
         const transaction = await sequelize?.transaction();
