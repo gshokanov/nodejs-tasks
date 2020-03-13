@@ -1,0 +1,17 @@
+INSERT INTO public.users (id, login, password, age, "isDeleted") VALUES
+(uuid_generate_v4(), 'Aaron', 'faasdasd', 13, false),
+(uuid_generate_v4(), 'Amy', 'faazxczsd', 23, false),
+(uuid_generate_v4(), 'John', 'zxvzxvsdasd', 54, false),
+(uuid_generate_v4(), 'James', 'fasdadsasd', 29, false),
+(uuid_generate_v4(), 'Joe', 'qwesadd', 31, false),
+(uuid_generate_v4(), 'Harry', 'asgasgsdasd', 68, false),
+(uuid_generate_v4(), 'Heather', 'asgasggw', 42, false),
+(uuid_generate_v4(), 'Ian', 'zxvqwqe', 19, false),
+(uuid_generate_v4(), 'Poe', 'agqweqsg', 38, false),
+(uuid_generate_v4(), 'Trace', 'zxvqegqegq', 33, false),
+(uuid_generate_v4(), 'Jamie', 'asfqwea', 35, false),
+(uuid_generate_v4(), 'Gregor', 'eqwgqsga', 26, false),
+(uuid_generate_v4(), 'Frank', 'Zxvqegqgqeg', 21, false),
+(uuid_generate_v4(), 'Vlad', 'qweqsfasfawa', 8, false),
+(uuid_generate_v4(), 'Anthony', 'gegqegqegqeg', 43, false),
+(uuid_generate_v4(), 'Andrew', 'Gasgasgasgawg', 84, false);
