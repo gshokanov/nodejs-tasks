@@ -1,18 +1,18 @@
 import { Router } from 'express';
 import { DatabaseError } from 'sequelize';
 import { UserService } from '../services/user.service';
-import { UserModel } from '../models/user.model';
 import { logController } from '../middleware/log-controller';
 import { userValidator, autoSuggestValidator } from '../middleware/validators';
-import { UserMapper } from '../data-access/user.mapper';
 import { controllerErrorHandler } from '../middleware/error-handler';
+import { jwtAuthorization } from '../middleware/authorization';
+import { globalRegistry } from '../config/registry';
 
 const router = Router();
-const service = new UserService(UserModel, new UserMapper());
+const service = globalRegistry.resolve(UserService);
 
 router.use(logController('UserController'));
 
-router.get('/autosuggest', autoSuggestValidator, async (req, res, next) => {
+router.get('/autosuggest', jwtAuthorization, autoSuggestValidator, async (req, res, next) => {
     try {
         const { loginSubstring, limit } = req.query;
         const result = await service.autosuggestUsers(loginSubstring, limit);
@@ -22,7 +22,7 @@ router.get('/autosuggest', autoSuggestValidator, async (req, res, next) => {
     }
 });
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', jwtAuthorization, async (req, res, next) => {
     try {
         const { id } = req.params;
         const user = await service.findById(id);
@@ -45,7 +45,7 @@ router.post('/', userValidator, async (req, res, next) => {
     }
 });
 
-router.put('/:id', userValidator, async (req, res, next) => {
+router.put('/:id', jwtAuthorization, userValidator, async (req, res, next) => {
     try {
         const { id } = req.params;
         const user = req.body;
@@ -62,7 +62,7 @@ router.put('/:id', userValidator, async (req, res, next) => {
     }
 });
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', jwtAuthorization, async (req, res, next) => {
     try {
         const { id } = req.params;
         const result = await service.delete(id);

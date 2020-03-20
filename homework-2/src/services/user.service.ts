@@ -73,4 +73,17 @@ export class UserService {
         await user.save();
         return true;
     }
+
+    @log()
+    async login(credentials: { login: string; password: string }): Promise<DomainExistingUser | null> {
+        const user = await this.model.findOne({
+            where: {
+                login: credentials.login
+            }
+        });
+        if (!user || user.isDeleted || user.password !== credentials.password) {
+            return null;
+        }
+        return this.mapper.toDomain(user);
+    }
 }

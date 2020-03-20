@@ -34,7 +34,7 @@ app.use(cors({
 }));
 
 app.use('/api/login', loginController);
-app.use('/api/user', jwtAuthorization, userController);
+app.use('/api/user', userController);
 app.use('/api/group', jwtAuthorization, groupController);
 app.use(globalErrorHandler);
 
