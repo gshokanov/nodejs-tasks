@@ -25,7 +25,8 @@ export class UserService {
             where: {
                 login: {
                     [Op.like]: `${loginSubstring}%`
-                }
+                },
+                isDeleted: false
             },
             order: [
                 ['login', 'ASC']
