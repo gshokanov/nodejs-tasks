@@ -33,7 +33,7 @@ export class GroupService {
     }
 
     @log()
-    async update(id: number, updatedGroup: Group): Promise<void> {
+    async update(id: string, updatedGroup: Group): Promise<void> {
         await this.model.update(updatedGroup, {
             where: {
                 id
@@ -68,7 +68,7 @@ export class GroupService {
                 )
             );
             await transaction.commit();
-        } catch(err) {
+        } catch (err) {
             await transaction.rollback();
             throw err;
         }

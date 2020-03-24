@@ -2,7 +2,11 @@
   "include": [
     "src/**/*.ts"
   ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ],
   "compilerOptions": {
+    "baseUrl": ".",
     "strict": true,
     "noImplicitAny": true,
     "experimentalDecorators": true,
