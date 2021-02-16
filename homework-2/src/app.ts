@@ -4,6 +4,9 @@ import * as express from 'express';
 import { config } from './config/config';
 import { UserModel } from './models/user.model';
 import { userController } from './controllers/user.controller';
+import { groupController } from './controllers/group.controller';
+import { GroupModel } from './models/group.model';
+import { UserGroupModel } from './models/user-group.model';
 
 const sequelize = new Sequelize(config.databaseUri, {
     dialect: 'postgres',
@@ -13,7 +16,7 @@ const sequelize = new Sequelize(config.databaseUri, {
         }
     },
     ssl: true,
-    models: [UserModel]
+    models: [UserModel, GroupModel, UserGroupModel]
 });
 
 sequelize.authenticate().then(() => console.info('Connected to databse'));
@@ -23,6 +26,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/user', userController);
+app.use('/api/group', groupController);
 
 app.all('*', (req, res) => res.sendStatus(404));
 

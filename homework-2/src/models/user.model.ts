@@ -1,4 +1,5 @@
 import { Model, Table, Column, DataType } from 'sequelize-typescript';
+import { UserGroupModel } from './user-group.model';
 import * as uuid from 'uuid/v4';
 
 @Table({
@@ -33,3 +34,12 @@ export class UserModel extends Model<UserModel> {
     })
     isDeleted!: boolean;
 }
+
+process.nextTick(() => UserModel.beforeDestroy(async (user) => {
+    const result = await UserGroupModel.findAll({
+        where: {
+            userId: (user as UserModel).id
+        }
+    });
+    return Promise.all(result.map(record => record.destroy())) as any as Promise<void>;
+}));
