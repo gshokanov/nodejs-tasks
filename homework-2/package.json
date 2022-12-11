@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "uuid": "^3.3.3"
   }
 }
